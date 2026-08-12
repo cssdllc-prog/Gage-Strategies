@@ -1,0 +1,1 @@
+ALTER TABLE `products` ADD `monthlyPrice` decimal(10,2);

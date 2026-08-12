@@ -1,0 +1,104 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1783378194482,
+      "tag": "0000_secret_malice",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1783380427623,
+      "tag": "0001_fair_santa_claus",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1784165668059,
+      "tag": "0002_bumpy_shriek",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1784166625662,
+      "tag": "0003_short_rattler",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1784377047306,
+      "tag": "0004_crazy_celestials",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1784383063321,
+      "tag": "0005_past_mac_gargan",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1784384613546,
+      "tag": "0006_tough_multiple_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1784420955330,
+      "tag": "0007_mean_goliath",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1784421957124,
+      "tag": "0008_light_karen_page",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1784465401653,
+      "tag": "0009_fluffy_ares",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1784466141478,
+      "tag": "0010_narrow_boom_boom",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1785494952277,
+      "tag": "0011_neat_infant_terrible",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "5",
+      "when": 1785582008518,
+      "tag": "0012_wonderful_senator_kelly",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "5",
+      "when": 1785582812136,
+      "tag": "0013_flawless_senator_kelly",
+      "breakpoints": true
+    }
+  ]
+}
