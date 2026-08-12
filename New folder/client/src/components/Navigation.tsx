@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Menu, X, Building2, Plus } from "lucide-react";
 import { useOrg } from "@/contexts/OrgContext";
 
-const LOGO_URL = "/manus-storage/gage-header-logo_e7fb5aa2.png";
+const LOGO_URL = "/logo.png";
 
 export default function Navigation() {
   const [location, navigate] = useLocation();
@@ -38,6 +38,7 @@ export default function Navigation() {
   };
 
   const exploreItems = [
+    { label: "Workflow Systems", path: "/workflow-systems", desc: "Fully managed automation, built and run for you" },
     { label: "Solutions Hub", path: "/solutions", desc: "Browse all tools & templates" },
     { label: "Bundles", path: "/bundles", desc: "Save with curated packages" },
     { label: "Compare Plans", path: "/compare", desc: "Free vs paid side-by-side" },
