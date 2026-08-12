@@ -25,6 +25,7 @@ import AdminBlog from "./pages/admin/Blog";
 import MyPurchases from "./pages/MyPurchases";
 import AdminPurchases from "./pages/admin/Purchases";
 import CustomSolutions from "./pages/CustomSolutions";
+import WorkflowSystems from "./pages/WorkflowSystems";
 import FreeTools from "./pages/FreeTools";
 import CompanyProfile from "./pages/CompanyProfile";
 import ComparePlans from "./pages/ComparePlans";
@@ -32,7 +33,6 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Organizations from "./pages/Organizations";
 import InviteAccept from "./pages/InviteAccept";
-import BusinessNameGenerator from "./pages/tools/BusinessNameGenerator";
 import ROICalculator from "./pages/tools/ROICalculator";
 import ColdEmailWriter from "./pages/tools/ColdEmailWriter";
 import InvoiceGenerator from "./pages/tools/InvoiceGenerator";
@@ -54,8 +54,8 @@ function Router() {
       <Route path={"/about"} component={About} />
       <Route path={"/contact"} component={Contact} />
       <Route path={"/custom-solutions"} component={CustomSolutions} />
+      <Route path={"/workflow-systems"} component={WorkflowSystems} />
       <Route path={"/free-tools"} component={FreeTools} />
-      <Route path={"/tools/business-name-generator"} component={BusinessNameGenerator} />
       <Route path={"/tools/roi-calculator"} component={ROICalculator} />
       <Route path={"/tools/cold-email-writer"} component={ColdEmailWriter} />
       <Route path={"/tools/invoice-generator"} component={InvoiceGenerator} />
