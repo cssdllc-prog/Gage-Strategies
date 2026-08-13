@@ -180,11 +180,11 @@ export default function Home() {
                 onClick={() => navigate(tool.path)}
                 className="group rounded-xl border border-border bg-card hover:border-primary/50 hover:shadow-lg transition-all text-left flex flex-col overflow-hidden"
               >
-                <div className="w-full h-32 overflow-hidden border-b border-border">
+                <div className="w-full h-32 overflow-hidden border-b border-border bg-primary/5 flex items-center justify-center p-6">
                   <img
                     src={tool.img}
                     alt={tool.name}
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                    className="h-full w-auto object-contain group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
                 <div className="p-4">
