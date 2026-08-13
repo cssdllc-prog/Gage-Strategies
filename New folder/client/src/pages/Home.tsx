@@ -38,7 +38,7 @@ export default function Home() {
               <img
                 src="/logo.png"
                 alt="GAGE Strategies"
-                className="h-8 md:h-10 w-auto mb-4 opacity-90"
+                className="h-20 md:h-24 lg:h-28 w-auto mb-6"
               />
               <h1 className="mb-5 text-foreground leading-[1.1] text-4xl md:text-5xl lg:text-6xl">
                 From Chaos<br />to <span className="text-primary">Clarity</span>
