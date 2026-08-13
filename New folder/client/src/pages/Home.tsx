@@ -1,6 +1,6 @@
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Zap, Sparkles, Bot, Layers, Download, Gift, Calendar, ArrowRight, CheckCircle2, TrendingUp, Clock, Shield, Users } from "lucide-react";
+import { ChevronRight, Zap, Sparkles, Bot, Layers, Download, Gift, Calendar, ArrowRight, CheckCircle2, TrendingUp, Clock, Shield, Users, Boxes, LineChart, Settings2 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import Navigation from "@/components/Navigation";
 
@@ -28,7 +28,7 @@ export default function Home() {
       {/* Hero Section — Dynamic, product-focused */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.04]">
-          <img src="/manus-storage/hero-abstract_ca396b25.png" alt="" className="w-full h-full object-cover" />
+          <img src="/hero-bg.png" alt="" className="w-full h-full object-cover" />
         </div>
         <div className="container relative py-20 md:py-28 lg:py-36">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -36,7 +36,7 @@ export default function Home() {
             <div className="animate-fade-in-up" style={{ animationDelay: '0ms' }}>
               {/* Small wordmark lockup above headline */}
               <img
-                src="/manus-storage/gage-hero-wordmark_46bf2c4f.png"
+                src="/logo.png"
                 alt="GAGE Strategies"
                 className="h-8 md:h-10 w-auto mb-4 opacity-90"
               />
@@ -168,12 +168,12 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { name: "AI Business Name Generator", desc: "Generate brandable names instantly. Choose industry, style, and keywords.", path: "/tools/business-name-generator", img: "/manus-storage/tool-business-name_5189838a.png", badge: "AI" },
-              { name: "Marketing ROI Calculator", desc: "Calculate ROI with interactive sliders. Compare up to 4 scenarios.", path: "/tools/roi-calculator", img: "/manus-storage/tool-roi-calculator_a3aa2f93.png", badge: "Calculator" },
-              { name: "AI Cold Email Writer", desc: "Generate a complete 4-email outreach sequence personalized to your product.", path: "/tools/cold-email-writer", img: "/manus-storage/tool-cold-email_da67dea6.png", badge: "AI" },
-              { name: "Invoice Generator", desc: "Create professional invoices with line items, taxes, and PDF download.", path: "/tools/invoice-generator", img: "/manus-storage/tool-invoice_6327e8b1.png", badge: "Utility" },
-              { name: "Profit Margin Calculator", desc: "Calculate gross and net margins for multiple products. Export results.", path: "/tools/profit-margin-calculator", img: "/manus-storage/tool-profit-margin_fcd3d44c.png", badge: "Calculator" },
-              { name: "AI Social Media Captions", desc: "Generate platform-optimized captions with hashtags and emojis.", path: "/tools/social-media-captions", img: "/manus-storage/tool-social-captions_2ebf037b.png", badge: "AI" },
+              { name: "AI Business Name Generator", desc: "Generate brandable names instantly. Choose industry, style, and keywords.", path: "/tools/business-name-generator", img: "/tool-business-name.svg", badge: "AI" },
+              { name: "Marketing ROI Calculator", desc: "Calculate ROI with interactive sliders. Compare up to 4 scenarios.", path: "/tools/roi-calculator", img: "/tool-roi-calculator.svg", badge: "Calculator" },
+              { name: "AI Cold Email Writer", desc: "Generate a complete 4-email outreach sequence personalized to your product.", path: "/tools/cold-email-writer", img: "/tool-cold-email.svg", badge: "AI" },
+              { name: "Invoice Generator", desc: "Create professional invoices with line items, taxes, and PDF download.", path: "/tools/invoice-generator", img: "/tool-invoice.svg", badge: "Utility" },
+              { name: "Profit Margin Calculator", desc: "Calculate gross and net margins for multiple products. Export results.", path: "/tools/profit-margin-calculator", img: "/tool-profit-margin.svg", badge: "Calculator" },
+              { name: "AI Social Media Captions", desc: "Generate platform-optimized captions with hashtags and emojis.", path: "/tools/social-media-captions", img: "/tool-social-captions.svg", badge: "AI" },
             ].map((tool) => (
               <button
                 key={tool.name}
@@ -261,6 +261,60 @@ export default function Home() {
               Browse All Solutions
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Workflow Systems — Flagship managed solution, visually distinct from the self-serve hub */}
+      <section className="border-b border-border" style={{ background: "#10252B" }}>
+        <div className="container py-16 md:py-24">
+          <span
+            className="inline-block text-xs font-semibold uppercase tracking-wider mb-3 px-3 py-1 rounded-full"
+            style={{ color: "#10252B", background: "#D9F36B" }}
+          >
+            Our Flagship Managed Solution
+          </span>
+          <h2 className="text-white text-3xl md:text-4xl mb-4 max-w-2xl">The GAGE Response Engine</h2>
+          <p className="text-white/70 text-lg max-w-2xl mb-10 leading-relaxed">
+            Too much to do, not enough time to do it — that's not a self-serve problem, it's a build-it-and-run-it
+            problem. For challenges too big for a template, we design, test, and manage the automated systems that
+            close the gap entirely.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-10">
+            <div className="border-t-2 pt-5" style={{ borderColor: "#D9F36B" }}>
+              <Boxes className="w-6 h-6 mb-3" style={{ color: "#D9F36B" }} />
+              <h3 className="text-white font-semibold mb-2">Modular</h3>
+              <p className="text-white/60 text-sm leading-relaxed">
+                Every piece solves one specific pain point. Choose what's costing you the most, skip the rest.
+              </p>
+            </div>
+            <div className="border-t-2 pt-5" style={{ borderColor: "#D9F36B" }}>
+              <Settings2 className="w-6 h-6 mb-3" style={{ color: "#D9F36B" }} />
+              <h3 className="text-white font-semibold mb-2">Managed</h3>
+              <p className="text-white/60 text-sm leading-relaxed">
+                We build it, test it, deploy it, and monitor it every month. You never touch a dashboard you didn't ask for.
+              </p>
+            </div>
+            <div className="border-t-2 pt-5" style={{ borderColor: "#D9F36B" }}>
+              <LineChart className="w-6 h-6 mb-3" style={{ color: "#D9F36B" }} />
+              <h3 className="text-white font-semibold mb-2">Measurable</h3>
+              <p className="text-white/60 text-sm leading-relaxed">
+                A plain monthly report shows exactly what the system caught — calls answered, reminders sent, reviews collected.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <Button
+              onClick={() => navigate("/workflow-systems")}
+              className="font-semibold px-6 py-5 text-base"
+              style={{ background: "#D9F36B", color: "#10252B" }}
+            >
+              Explore Workflow Systems
+              <ArrowRight className="w-4 h-4 ml-1.5" />
+            </Button>
+            <p className="text-white/50 text-sm">No long-term contracts — cancel anytime after your first month.</p>
           </div>
         </div>
       </section>
@@ -444,7 +498,7 @@ export default function Home() {
         <div className="container">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <img src="/manus-storage/gage-strategies-logo_119c7c41.png" alt="GAGE Strategies" className="h-12 w-auto mb-4" />
+              <img src="/logo.png" alt="GAGE Strategies" className="h-12 w-auto mb-4" />
               <p className="text-foreground/70 text-sm leading-relaxed">
                 Practical workflow tools for small businesses. From chaos to clarity.
               </p>
@@ -452,6 +506,7 @@ export default function Home() {
             <div>
               <h4 className="font-semibold text-foreground mb-4 text-sm">Product</h4>
               <ul className="space-y-2.5 text-sm text-foreground/70">
+                <li><button onClick={() => navigate("/workflow-systems")} className="hover:text-foreground transition-colors">Workflow Systems</button></li>
                 <li><button onClick={() => navigate("/solutions")} className="hover:text-foreground transition-colors">Solutions Hub</button></li>
                 <li><button onClick={() => navigate("/bundles")} className="hover:text-foreground transition-colors">Bundles</button></li>
                 <li><button onClick={() => navigate("/compare")} className="hover:text-foreground transition-colors">Compare Plans</button></li>
