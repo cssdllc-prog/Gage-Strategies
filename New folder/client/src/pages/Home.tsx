@@ -35,13 +35,11 @@ export default function Home() {
             {/* Left: Copy */}
             <div className="animate-fade-in-up" style={{ animationDelay: '0ms' }}>
               {/* Small wordmark lockup above headline */}
-              <div className="flex justify-center mb-6">
-                <img
-                  src="/logo.png"
-                  alt="GAGE Strategies"
-                  className="w-[340px] h-auto mix-blend-multiply"
-                />
-              </div>
+              <img
+                src="/logo.png"
+                alt="GAGE Strategies"
+                className="w-[680px] h-auto mb-6"
+              />
               <h1 className="mb-5 text-foreground leading-[1.1] text-4xl md:text-5xl lg:text-6xl">
                 From Chaos<br />to <span className="text-primary">Clarity</span>
               </h1>
