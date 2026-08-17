@@ -1,5 +1,3 @@
-import { COOKIE_NAME } from "@shared/const";
-import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
 import { getCategories, getProducts, getProductBySlug, getProductById, getPricingTiers, createLead, getBundles, getBundleBySlug, getProductAssets, getAdminMetrics, getAllLeads, getActivityLogs, logActivity, updateProduct, createProduct, deleteProduct, deleteProductAsset, addProductAsset, createCategory, updateCategory, deleteCategory, deleteLead, hasUserPurchased, getUserPurchases, getAllPurchases, getProductScreenshots, getCompanyProfile, upsertCompanyProfile } from "./db";
@@ -258,9 +256,10 @@ export const appRouter = router({
   // ==================== PUBLIC ROUTES ====================
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
-    logout: publicProcedure.mutation(({ ctx }) => {
-      const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+    // Actual sign-out happens client-side via Clerk's signOut(), which clears
+    // Clerk's own session cookie. This endpoint is kept only so the frontend
+    // doesn't need a separate code path — it's a no-op on the server.
+    logout: publicProcedure.mutation(() => {
       return {
         success: true,
       } as const;

@@ -10,4 +10,6 @@ export const ENV = {
   stripeSecretKey: process.env.STRIPE_SECRET_KEY ?? "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",
   stripePublishableKey: process.env.VITE_STRIPE_PUBLISHABLE_KEY ?? "",
+  clerkSecretKey: process.env.CLERK_SECRET_KEY ?? "",
+  clerkPublishableKey: process.env.VITE_CLERK_PUBLISHABLE_KEY ?? "",
 };

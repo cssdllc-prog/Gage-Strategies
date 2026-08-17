@@ -1,17 +1,28 @@
 export { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 
-// Generate login URL at runtime so redirect URI reflects the current origin.
+// Builds a link to Clerk's hosted sign-in page, bringing the user back to
+// wherever they were once they're signed in. A Clerk publishable key embeds
+// its account portal's domain as base64 (e.g. pk_test_<base64> decodes to
+// "your-app.clerk.accounts.dev$"), so this works for any Clerk instance
+// without hardcoding a domain.
 export const getLoginUrl = () => {
-  const oauthPortalUrl = import.meta.env.VITE_OAUTH_PORTAL_URL;
-  const appId = import.meta.env.VITE_APP_ID;
-  const redirectUri = `${window.location.origin}/api/oauth/callback`;
-  const state = btoa(redirectUri);
+  const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as
+    | string
+    | undefined;
 
-  const url = new URL(`${oauthPortalUrl}/app-auth`);
-  url.searchParams.set("appId", appId);
-  url.searchParams.set("redirectUri", redirectUri);
-  url.searchParams.set("state", state);
-  url.searchParams.set("type", "signIn");
+  if (!publishableKey) {
+    console.error("[Auth] Missing VITE_CLERK_PUBLISHABLE_KEY");
+    return "/";
+  }
 
-  return url.toString();
+  try {
+    const encoded = publishableKey.replace(/^pk_(test|live)_/, "");
+    const frontendApiDomain = atob(encoded).replace(/\$$/, "");
+    const url = new URL(`https://${frontendApiDomain}/sign-in`);
+    url.searchParams.set("redirect_url", window.location.href);
+    return url.toString();
+  } catch (error) {
+    console.error("[Auth] Failed to build Clerk sign-in URL", error);
+    return "/";
+  }
 };

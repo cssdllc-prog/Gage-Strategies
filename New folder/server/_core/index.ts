@@ -3,7 +3,7 @@ import express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { registerOAuthRoutes } from "./oauth";
+import { clerkMiddleware } from "@clerk/express";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
@@ -37,8 +37,11 @@ async function startServer() {
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  // Reads the Clerk session (cookie or Bearer token) on every request and
+  // makes it available to getAuth(req) in context.ts. Doesn't block
+  // unauthenticated requests itself — that's left to individual procedures.
+  app.use(clerkMiddleware());
   registerStorageProxy(app);
-  registerOAuthRoutes(app);
   // tRPC API
   app.use(
     "/api/trpc",
