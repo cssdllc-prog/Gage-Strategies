@@ -18,7 +18,16 @@ export const getLoginUrl = () => {
   try {
     const encoded = publishableKey.replace(/^pk_(test|live)_/, "");
     const frontendApiDomain = atob(encoded).replace(/\$$/, "");
-    const url = new URL(`https://${frontendApiDomain}/sign-in`);
+    // The publishable key decodes to the Frontend API domain (used for SDK
+    // calls, e.g. "xxx.clerk.accounts.dev"), but the human-facing Account
+    // Portal for dev instances lives one level up, without the "clerk."
+    // segment (e.g. "xxx.accounts.dev"). Using the Frontend API domain
+    // directly 404s, since it isn't meant to serve browsable pages.
+    const accountPortalDomain = frontendApiDomain.replace(
+      /\.clerk\.accounts\.dev$/,
+      ".accounts.dev"
+    );
+    const url = new URL(`https://${accountPortalDomain}/sign-in`);
     url.searchParams.set("redirect_url", window.location.href);
     return url.toString();
   } catch (error) {
