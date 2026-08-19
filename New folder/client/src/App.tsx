@@ -38,11 +38,13 @@ import ColdEmailWriter from "./pages/tools/ColdEmailWriter";
 import InvoiceGenerator from "./pages/tools/InvoiceGenerator";
 import ProfitMarginCalculator from "./pages/tools/ProfitMarginCalculator";
 import SocialMediaCaptionGenerator from "./pages/tools/SocialMediaCaptionGenerator";
+import SignIn from "./pages/SignIn";
 
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/sign-in/:rest*"} component={SignIn} />
       <Route path={"/solutions"} component={Solutions} />
       <Route path={"/bundles"} component={Bundles} />
       <Route path={"/solution/:id"} component={ProductDetail} />
