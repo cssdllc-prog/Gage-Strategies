@@ -44,6 +44,7 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/sign-in"} component={SignIn} />
       <Route path={"/sign-in/:rest*"} component={SignIn} />
       <Route path={"/solutions"} component={Solutions} />
       <Route path={"/bundles"} component={Bundles} />
