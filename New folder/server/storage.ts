@@ -1,20 +1,48 @@
-// Preconfigured storage helpers for Manus WebDev templates
-// Uploads via Forge Server presigned URL to S3 (PUT direct).
-// Downloads return /manus-storage/{key} paths served via 307 redirect.
+// File storage backed by Cloudflare R2 (S3-compatible, zero egress fees).
+// Uses the same AWS SDK as regular S3 — R2 just needs a custom endpoint and
+// its own credentials, since it speaks the S3 API rather than being AWS.
+//
+// Upload path: files are PUT directly to R2 from the server.
+// Download path: /manus-storage/{key} is served by storageProxy.ts, which
+// redirects to a short-lived signed R2 URL. The route prefix is kept as
+// "/manus-storage" (rather than renamed) so any already-stored asset URLs
+// in the database keep working without a data migration.
 
+import crypto from "crypto";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { ENV } from "./_core/env";
 
-function getForgeConfig() {
-  const forgeUrl = ENV.forgeApiUrl;
-  const forgeKey = ENV.forgeApiKey;
+let cachedClient: S3Client | null = null;
 
-  if (!forgeUrl || !forgeKey) {
+function getR2Client(): S3Client {
+  if (!ENV.r2AccountId || !ENV.r2AccessKeyId || !ENV.r2SecretAccessKey) {
     throw new Error(
-      "Storage config missing: set BUILT_IN_FORGE_API_URL and BUILT_IN_FORGE_API_KEY",
+      "Storage config missing: set R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, and R2_SECRET_ACCESS_KEY"
     );
   }
+  if (!cachedClient) {
+    cachedClient = new S3Client({
+      region: "auto",
+      endpoint: `https://${ENV.r2AccountId}.r2.cloudflarestorage.com`,
+      credentials: {
+        accessKeyId: ENV.r2AccessKeyId,
+        secretAccessKey: ENV.r2SecretAccessKey,
+      },
+    });
+  }
+  return cachedClient;
+}
 
-  return { forgeUrl: forgeUrl.replace(/\/+$/, ""), forgeKey };
+function requireBucket(): string {
+  if (!ENV.r2BucketName) {
+    throw new Error("Storage config missing: set R2_BUCKET_NAME");
+  }
+  return ENV.r2BucketName;
 }
 
 function normalizeKey(relKey: string): string {
@@ -31,67 +59,41 @@ function appendHashSuffix(relKey: string): string {
 export async function storagePut(
   relKey: string,
   data: Buffer | Uint8Array | string,
-  contentType = "application/octet-stream",
+  contentType = "application/octet-stream"
 ): Promise<{ key: string; url: string }> {
-  const { forgeUrl, forgeKey } = getForgeConfig();
+  const client = getR2Client();
+  const bucket = requireBucket();
   const key = appendHashSuffix(normalizeKey(relKey));
 
-  // 1. Get presigned PUT URL from Forge
-  const presignUrl = new URL("v1/storage/presign/put", forgeUrl + "/");
-  presignUrl.searchParams.set("path", key);
+  const body =
+    typeof data === "string" ? Buffer.from(data, "utf-8") : Buffer.from(data);
 
-  const presignResp = await fetch(presignUrl, {
-    headers: { Authorization: `Bearer ${forgeKey}` },
-  });
-
-  if (!presignResp.ok) {
-    const msg = await presignResp.text().catch(() => presignResp.statusText);
-    throw new Error(`Storage presign failed (${presignResp.status}): ${msg}`);
-  }
-
-  const { url: s3Url } = (await presignResp.json()) as { url: string };
-  if (!s3Url) throw new Error("Forge returned empty presign URL");
-
-  // 2. PUT file directly to S3
-  const blob =
-    typeof data === "string"
-      ? new Blob([data], { type: contentType })
-      : new Blob([data as any], { type: contentType });
-
-  const uploadResp = await fetch(s3Url, {
-    method: "PUT",
-    headers: { "Content-Type": contentType },
-    body: blob,
-  });
-
-  if (!uploadResp.ok) {
-    throw new Error(`Storage upload to S3 failed (${uploadResp.status})`);
-  }
+  await client.send(
+    new PutObjectCommand({
+      Bucket: bucket,
+      Key: key,
+      Body: body,
+      ContentType: contentType,
+    })
+  );
 
   return { key, url: `/manus-storage/${key}` };
 }
 
-export async function storageGet(relKey: string): Promise<{ key: string; url: string }> {
+export async function storageGet(
+  relKey: string
+): Promise<{ key: string; url: string }> {
   const key = normalizeKey(relKey);
   return { key, url: `/manus-storage/${key}` };
 }
 
 export async function storageGetSignedUrl(relKey: string): Promise<string> {
-  const { forgeUrl, forgeKey } = getForgeConfig();
+  const client = getR2Client();
+  const bucket = requireBucket();
   const key = normalizeKey(relKey);
 
-  const getUrl = new URL("v1/storage/presign/get", forgeUrl + "/");
-  getUrl.searchParams.set("path", key);
-
-  const resp = await fetch(getUrl, {
-    headers: { Authorization: `Bearer ${forgeKey}` },
-  });
-
-  if (!resp.ok) {
-    const msg = await resp.text().catch(() => resp.statusText);
-    throw new Error(`Storage signed URL failed (${resp.status}): ${msg}`);
-  }
-
-  const { url } = (await resp.json()) as { url: string };
-  return url;
+  const command = new GetObjectCommand({ Bucket: bucket, Key: key });
+  // Signed URL valid for 1 hour — plenty for a redirect-then-download flow,
+  // short enough that leaked links don't stay useful indefinitely.
+  return getSignedUrl(client, command, { expiresIn: 3600 });
 }

@@ -12,4 +12,9 @@ export const ENV = {
   stripePublishableKey: process.env.VITE_STRIPE_PUBLISHABLE_KEY ?? "",
   clerkSecretKey: process.env.CLERK_SECRET_KEY ?? "",
   clerkPublishableKey: process.env.VITE_CLERK_PUBLISHABLE_KEY ?? "",
+  openaiApiKey: process.env.OPENAI_API_KEY ?? "",
+  r2AccountId: process.env.R2_ACCOUNT_ID ?? "",
+  r2AccessKeyId: process.env.R2_ACCESS_KEY_ID ?? "",
+  r2SecretAccessKey: process.env.R2_SECRET_ACCESS_KEY ?? "",
+  r2BucketName: process.env.R2_BUCKET_NAME ?? "",
 };
