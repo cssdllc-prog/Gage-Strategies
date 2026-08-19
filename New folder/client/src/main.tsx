@@ -38,6 +38,20 @@ const trpcClient = trpc.createClient({
     httpBatchLink({
       url: "/api/trpc",
       transformer: superjson,
+      async headers() {
+        // Clerk's dev instance lives on a different domain than this app
+        // (pumped-jaguar-43.clerk.accounts.dev vs gage-strategies.com), so
+        // its session cookie isn't reliably readable by our own backend.
+        // Attaching the session token directly as a Bearer header sidesteps
+        // that entirely — @clerk/express's getAuth() already checks for
+        // this header automatically, no backend changes needed.
+        try {
+          const token = await (window as any).Clerk?.session?.getToken();
+          return token ? { Authorization: `Bearer ${token}` } : {};
+        } catch {
+          return {};
+        }
+      },
       fetch(input, init) {
         // Clerk's session cookie rides along automatically as long as
         // credentials are included on same-origin requests.
