@@ -1,1 +1,0 @@
-ALTER TABLE `purchases` MODIFY COLUMN `status` enum('active','pending_cancel','cancelled','expired','refunded') NOT NULL DEFAULT 'active';

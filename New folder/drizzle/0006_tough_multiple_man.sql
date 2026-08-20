@@ -1,1 +1,0 @@
-ALTER TABLE `leads` ADD `inquiryType` varchar(64) DEFAULT 'general';
