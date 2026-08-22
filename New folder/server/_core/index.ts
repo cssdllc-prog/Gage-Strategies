@@ -57,6 +57,30 @@ async function startServer() {
     serveStatic(app);
   }
 
+  // Safety net: any error that reaches this point (including ones from
+  // middleware/routes that didn't handle their own errors) gets logged in
+  // full rather than silently producing an unexplained 500.
+  app.use(
+    (
+      err: unknown,
+      _req: express.Request,
+      res: express.Response,
+      _next: express.NextFunction
+    ) => {
+      console.error("[GlobalErrorHandler] Unhandled error:", err);
+      if (!res.headersSent) {
+        res.status(500).send("Internal Server Error");
+      }
+    }
+  );
+
+  process.on("unhandledRejection", reason => {
+    console.error("[UnhandledRejection]", reason);
+  });
+  process.on("uncaughtException", err => {
+    console.error("[UncaughtException]", err);
+  });
+
   const preferredPort = parseInt(process.env.PORT || "3000");
   const port = await findAvailablePort(preferredPort);
 
