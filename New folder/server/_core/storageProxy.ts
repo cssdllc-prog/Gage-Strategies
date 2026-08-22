@@ -1,9 +1,20 @@
 import type { Express } from "express";
 import { storageGetSignedUrl } from "../storage";
 
+const STORAGE_PREFIX = "/manus-storage/";
+
 export function registerStorageProxy(app: Express) {
-  app.get("/manus-storage/*", async (req, res) => {
-    const key = (req.params as Record<string, string>)[0];
+  // Plain middleware with a string-prefix check instead of an Express route
+  // pattern (e.g. app.get("/manus-storage/*", ...)). This sidesteps any
+  // path-to-regexp version quirks entirely, since there's no pattern
+  // matching involved at all — just a direct string comparison.
+  app.use(async (req, res, next) => {
+    if (req.method !== "GET" || !req.path.startsWith(STORAGE_PREFIX)) {
+      next();
+      return;
+    }
+
+    const key = req.path.slice(STORAGE_PREFIX.length);
     console.log("[StorageProxy] Request for key:", key);
     if (!key) {
       res.status(400).send("Missing storage key");

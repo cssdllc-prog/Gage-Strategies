@@ -40,7 +40,41 @@ async function startServer() {
   // Reads the Clerk session (cookie or Bearer token) on every request and
   // makes it available to getAuth(req) in context.ts. Doesn't block
   // unauthenticated requests itself — that's left to individual procedures.
-  app.use(clerkMiddleware());
+  // clerkMiddleware's internal auth check doesn't await/catch its own
+  // promise (a known gap — see @clerk/express source), so if it ever
+  // rejects, Express never finds out and the connection just hangs until
+  // Railway's edge times out and fabricates its own opaque 500 — with
+  // nothing ever logged on our end. A timeout-based safety net guarantees
+  // every request resolves quickly even if Clerk's own check never calls
+  // back: after 5s we proceed as unauthenticated rather than hanging.
+  app.use((req, res, next) => {
+    let settled = false;
+    const settle = (err?: unknown) => {
+      if (settled) return;
+      settled = true;
+      next(err as never);
+    };
+
+    const timeout = setTimeout(() => {
+      console.error(
+        "[ClerkMiddleware] Did not complete within 5s for",
+        req.method,
+        req.path,
+        "— proceeding as unauthenticated to avoid a hung request."
+      );
+      settle();
+    }, 5000);
+
+    try {
+      clerkMiddleware()(req, res, err => {
+        clearTimeout(timeout);
+        settle(err);
+      });
+    } catch (err) {
+      clearTimeout(timeout);
+      settle(err);
+    }
+  });
   registerStorageProxy(app);
   // tRPC API
   app.use(
