@@ -38,6 +38,7 @@ import ColdEmailWriter from "./pages/tools/ColdEmailWriter";
 import InvoiceGenerator from "./pages/tools/InvoiceGenerator";
 import ProfitMarginCalculator from "./pages/tools/ProfitMarginCalculator";
 import SocialMediaCaptionGenerator from "./pages/tools/SocialMediaCaptionGenerator";
+import BusinessNameGenerator from "./pages/tools/BusinessNameGenerator";
 import SignIn from "./pages/SignIn";
 
 function Router() {
@@ -64,6 +65,7 @@ function Router() {
       <Route path={"/tools/invoice-generator"} component={InvoiceGenerator} />
       <Route path={"/tools/profit-margin-calculator"} component={ProfitMarginCalculator} />
       <Route path={"/tools/social-media-captions"} component={SocialMediaCaptionGenerator} />
+      <Route path={"/tools/business-name-generator"} component={BusinessNameGenerator} />
       <Route path={"/compare"} component={ComparePlans} />
       <Route path={"/purchase-success"} component={PurchaseSuccess} />
       <Route path={"/my-purchases"} component={MyPurchases} />
